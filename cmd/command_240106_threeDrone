@@ -1,0 +1,125 @@
+# workflow
+# connect three tello
+roslaunch tello_driver three_tello_test_240106.launch 
+
+-----------------------------------------------------------
+# check battery
+rostopic echo /tello_0/status | grep battery
+rostopic echo /tello_1/status | grep battery
+rostopic echo /tello_2/status | grep battery
+
+-----------------------------------------------------------
+# flight control
+# static and hover mode only
+roslaunch tello_pub 231101_three_tello_testing.launch
+
+-----------------------------------------------------------
+# sensors: aruco, face, yolo
+roslaunch tello_sub multi_pose_drones.launch
+
+-----------------------------------------------------------
+# odometry
+roslaunch tello_pub faceOdom.launch
+
+roslaunch tello_pub tello_drones_odom.launch
+
+-----------------------------------------------------------
+# record
+roslaunch record_rosbag record_rosbag_threeTello_231031.launch
+
+-----------------------------------------------------------
+## debug by hand
+rostopic pub <topic> geometry_msgs/Twist -- '[lx, ly, lz]' '[ax, ay, az]'
+rostopic pub <topic> std_msgs/Empty 
+
+---
+rostopic pub /EOT std_msgs/Empty
+rostopic pub /SOT std_msgs/Empty
+---
+rostopic pub /tello_0/land std_msgs/Empty 
+rostopic pub /tello_1/land std_msgs/Empty
+rostopic pub /tello_2/land std_msgs/Empty
+---
+rostopic pub /tello_0/cmd_vel geometry_msgs/Twist -- '[0.0, 0.0, 0.4]' '[0.0, 0.0, 0.0]'
+rostopic pub /tello_0/cmd_vel geometry_msgs/Twist -- '[0.0, 0.0, 0.0]' '[0.0, 0.0, 0.0]'
+
+
+===========================================================
+
+TODO:
+	test the feasibility of synchronized takeoff and hover of three drones
+		directly command takeoff
+		
+	test the aruco marker part for the drone formation
+	
+	
+===========================================================
+
+1103 test
+
+hover:
+	1st exp
+		forget to record bag file first!
+		drones' takeoff synchronized!
+		subject to drifting
+		possibly need a formation command!
+		
+	2nd exp
+		takeoff synchronized
+		subject to drifting for each drones!
+		need a formation hovering controller!
+		or try to do experiment in daylight!
+			odometry could not read the velocity
+			since visual positioning system is not working
+		try to connect each drone AP via script!
+
+------------
+static:
+	1st exp
+		2.5 m marker is visible!
+		4.0 m marker is only sometimes visible!
+		try decrease the longest distance and do again!
+		
+	2nd exp
+		4.0m ---> 3.5m
+		most of the time are visible!
+		not visible in rqt_bag
+		but rosbag info could read the number of data points
+		success!
+
+============================================================
+1102 test
+static:
+	1st exp
+		arcuo pose is not detected ==> debug success
+		distance of drones need to be modified 
+		fix the coding error that causing drones to fly
+	2nd exp
+		unexpected disconnection from drone1
+		drone1's marker is not detected
+		possible owing to the illuminance condition
+	3rd exp
+		two set of bag files are the same
+		the former has no SOT command published
+		the latter has the SOT command published
+		
+	data recorded are wrong in position
+	check the accuracy of aruco pose estimation part
+	==> wrong pose recorded!
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

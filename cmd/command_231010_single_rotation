@@ -1,0 +1,127 @@
+workflow
+# connect tello_1 --> marker id=25 --> ifname_1
+# connect tello_0 --> no marker    --> ifname_0
+
+roslaunch tello_driver tello_node_img_repub.launch
+
+------------------------------------------------------------------------------------
+
+# check battery
+rostopic echo /tello_1/status | grep battery
+rostopic echo /tello_0/status | grep battery
+
+------------------------------------------------------------------------------------
+
+# flight control
+# manual flight test and takeoff flight test
+# check for tello_0 or tello_1
+
+roslaunch tello_pub 231003_tello_fix_traj_track.launch
+
+# manual velocity publisher
+rosrun tello_pub tello_waypoint_debugger_named.py
+
+------------------------------------------------------------------------------------
+
+# record
+# check for tello_0 or tello_1
+
+roslaunch record_rosbag record_rosbag_manual_square_230907.launch
+
+-------------------------------------------------------------------------------------
+
+## debug by hand
+rostopic pub <topic> geometry_msgs/Twist -- '[lx, ly, lz]' '[ax, ay, az]'
+rostopic pub /tello_0/cmd_vel geometry_msgs/Twist -- '[0.0, 0.0, 0.0]' '[0.0, 0.0, 0.0]'
+rostopic pub <topic> std_msgs/Empty 
+rostopic pub /EOT std_msgs/Empty 
+rostopic pub /SOT std_msgs/Empty 
+
+0.0, 0.3, 0.0, 0.3
+
+=================================================================================================
+TODOs:
+	rotate around a circle trajectory with 1m radius
+	both drone
+		tello_0
+		tello_1
+	LiDAR to ground ~1m (1.013m)
+=================================================================================================
+exp:
+	1st test
+		tello_1
+		0.314 cmd vel
+		0.314 cmd yaw angvel
+		too slow, need to fly faster!
+	----
+	2nd test
+		tello_1
+		0.628 cmd vel
+		0.628 cmd yaw angvel
+		too fast in linear
+	----
+	3rd test
+		tello_1
+		0.314 cmd vel
+		0.628 ang vel
+		too fast in rotation
+		
+	----
+	4th test
+		tello_1
+		0.4 cmd vel
+		0.4 ang vel
+		a distorted circle
+	----
+	5th test
+		tello_0
+		0.314 cmd_vel
+		0.314 ang vel
+		distorted circle
+		
+	----
+	6th test
+		tello_0
+		try manually publish velocity to accomplish a circle
+		not good
+		
+	----
+	7th test
+		tello_1
+		ensure visibility
+		manual control
+		failed
+	----
+	8th test
+		tello_1
+		manual control
+		rotate in the ccw
+		0.3 cmd vel
+		-0.3 ~ -0.4 cmd angvel
+		success!
+		
+	===============
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

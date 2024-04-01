@@ -1,0 +1,14 @@
+workflow
+# drone ZOH 1st-order dynamical model 
+roslaunch tello_pub formation_debugger.launch
+
+# formation control node
+roslaunch tello_pub formation_ctrl.launch
+
+# record
+roslaunch record_rosbag record_rosbag_sim_240203.launch
+
+## required topic
+rostopic pub /SOT std_msgs/Empty
+rostopic pub /exp_mode std_msgs/Empty
+

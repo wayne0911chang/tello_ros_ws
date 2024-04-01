@@ -1,0 +1,133 @@
+# workflow
+# connect tello_0, tello_1
+roslaunch tello_driver two_tello_240110.launch
+
+-----------------------------------------------------------
+# check battery
+rostopic echo /tello_0/status | grep battery
+rostopic echo /tello_1/status | grep battery
+
+
+-----------------------------------------------------------
+# flight control
+# to start sensor testing ==> /SOT
+# to takeoff ==> /takeoff
+# to start exp ==> /exp_mode
+# to terminate ==> /EOT
+roslaunch tello_pub three_tello_flight.launch
+
+-----------------------------------------------------------
+# sensors: aruco, face
+# set arbitrary face
+roslaunch tello_sub multi_pose_drones.launch debug_face:=true
+
+# use real face
+roslaunch tello_sub multi_pose_drones.launch debug_face:=false
+
+# realsense
+roslaunch realsense2_camera rs_camera_aruco.launch
+
+-----------------------------------------------------------
+# odometry
+roslaunch tello_pub tello_drones_odom.launch
+roslaunch tello_pub face_pose_odom.launch
+
+-----------------------------------------------------------
+# formation control
+# cfg1
+roslaunch tello_pub formation_ctrl_twoDrone.launch
+
+-----------------------------------------------------------
+# record
+# open launch file
+# open realsense
+# SOT --> takeoff --> exp_mode --> EOT
+roslaunch record_rosbag record_rosbag_TwoDrone240313.launch bag_name:=TwoTracking
+
+-----------------------------------------------------------
+## debug by hand
+rostopic pub <topic> geometry_msgs/Twist -- '[lx, ly, lz]' '[ax, ay, az]'
+rostopic pub <topic> std_msgs/Empty 
+
+---
+rostopic pub /EOT std_msgs/Empty
+rostopic pub /SOT std_msgs/Empty
+---
+rostopic pub /tello_0/land std_msgs/Empty 
+rostopic pub /tello_1/land std_msgs/Empty
+rostopic pub /tello_2/land std_msgs/Empty
+---
+rostopic pub /tello_0/cmd_vel geometry_msgs/Twist -- '[0.0, 0.0, 0.4]' '[0.0, 0.0, 0.0]'
+rostopic pub /tello_0/cmd_vel geometry_msgs/Twist -- '[0.0, 0.0, 0.0]' '[0.0, 0.0, 0.0]'
+
+
+===========================================================
+
+TODO:
+	two drone tracking with arbitrary face odometry
+	two drone tracking with real face odometry
+	desired motion:
+		stand still
+		walk straight
+		slightly turning head
+		combination
+	
+===========================================================
+
+0308
+	original config, aka cfg1
+		assume the rotation to I0 is
+		R_realsense_to_I0 = [0.0, 0.0, 1.0
+				      -1.0, 0.0, 0.0
+				      0.0, -1.0, 0.0]
+		initial position to I0
+			height = 1.01 m
+			right  = 1.00 m
+			front  = 3.50 m
+		gain: 0.5I 
+		failed
+			drone 1 measure a fixed relative pose is wrong!
+	
+	cfg1, face debug
+		R_realsense_to_I0 = [0.0, 0.0, 1.0
+				      -1.0, 0.0, 0.0
+				      0.0, -1.0, 0.0]
+		initial position to I0
+			height = 1.01 m
+			right  = 1.00 m
+			front  = 3.50 m
+		face position init
+			height = 1.01 m
+		gain: 0.5I 	
+	cfg1, face debug
+		R_realsense_to_I0 = [0.0, 0.0, 1.0
+				      -1.0, 0.0, 0.0
+				      0.0, -1.0, 0.0]
+		initial position to I0
+			height = 1.01 m
+			right  = 1.00 m
+			front  = 3.50 m
+		face position init
+			height = 1.01 m
+		gain: 0.5I 	
+		failed due to formation control code bug
+		but the twist command is correct!
+	cfg1, face debug
+		failed, seemed to be wrong command
+		try cfg0!
+	cfg0, face debug
+		failed
+
+
+
+
+
+
+
+
+
+
+
+
+
+

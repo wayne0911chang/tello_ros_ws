@@ -1,0 +1,119 @@
+# workflow
+# connect tello_0, tello_1
+# roslaunch tello_driver three_tello_test_240106.launch 
+
+roslaunch tello_driver two_tello_240110.launch
+
+-----------------------------------------------------------
+# check battery
+rostopic echo /tello_0/status | grep battery
+rostopic echo /tello_1/status | grep battery
+
+
+-----------------------------------------------------------
+# flight control
+
+# to start sensor testing ==> /SOT
+# to takeoff ==> /takeoff
+# to start exp ==> /exp_mode
+# to terminate ==> /EOT
+
+roslaunch tello_pub three_tello_flight.launch
+
+-----------------------------------------------------------
+# sensors: aruco, face, yolo
+roslaunch tello_sub multi_pose_drones.launch
+
+
+# setup LiDAR
+lidar center height = (0.987 + 0.916) / 2
+
+# 0109 16:57
+lidar center height = (1.009 + 0.932) / 2 + 0.192
+
+
+# if use YOLO, modify the yolo tag
+roslaunch darknet_ros darknet_ros_twoDrone_230524.launch 
+
+-----------------------------------------------------------
+# odometry
+# use YOLO or not
+
+# roslaunch tello_pub tello_odom_all.launch 
+
+
+roslaunch tello_pub face_pose_odom.launch
+roslaunch tello_pub tello_drones_odom.launch
+
+-----------------------------------------------------------
+# record
+roslaunch record_rosbag record_rosbag_240106.launch bag_name:=two_tracking
+
+# open launch file
+# open LiDAR
+# SOT --> takeoff --> exp_mode --> EOT
+
+-----------------------------------------------------------
+## debug by hand
+rostopic pub <topic> geometry_msgs/Twist -- '[lx, ly, lz]' '[ax, ay, az]'
+rostopic pub <topic> std_msgs/Empty 
+
+---
+rostopic pub /EOT std_msgs/Empty
+rostopic pub /SOT std_msgs/Empty
+---
+rostopic pub /tello_0/land std_msgs/Empty 
+rostopic pub /tello_1/land std_msgs/Empty
+rostopic pub /tello_2/land std_msgs/Empty
+---
+rostopic pub /tello_0/cmd_vel geometry_msgs/Twist -- '[0.0, 0.0, 0.4]' '[0.0, 0.0, 0.0]'
+rostopic pub /tello_0/cmd_vel geometry_msgs/Twist -- '[0.0, 0.0, 0.0]' '[0.0, 0.0, 0.0]'
+
+
+===========================================================
+
+TODO:
+	desired motion:
+		stand still
+		walk straight
+		slightly turning head
+		combination
+		
+	seeing the human and hover for a while
+	observe the controller twist w.r.t. human's motion
+	track the human motion in face
+	
+	
+===========================================================
+
+0109
+
+1st exp
+	observe position drift in ESKF-Q itself!!!!!
+	debug quat_eskf_full.cpp
+		seems to be some rotation problem
+
+--------------------------
+0110
+1st exp
+	two drone formation tracking 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

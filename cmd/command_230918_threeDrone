@@ -1,0 +1,49 @@
+# workflow
+# connect three tello
+roslaunch tello_driver three_tello_test_230916.launch 
+
+-----------------------------------------------------------
+# check battery
+rostopic echo /tello_0/status | grep battery
+rostopic echo /tello_1/status | grep battery
+rostopic echo /tello_2/status | grep battery
+
+-----------------------------------------------------------
+# flight control
+# manual flight test and takeoff flight test
+rosrun tello_pub tello_manual_pub.py
+
+-----------------------------------------------------------
+# aruco sensor
+roslaunch tello_sub multi_pose_drones.launch
+
+-----------------------------------------------------------
+# record
+roslaunch record_rosbag record_rosbag_threeTello_230918.launch
+
+-----------------------------------------------------------
+# start the testing
+rostopic pub /SOT std_msgs/Empty
+
+-----------------------------------------------------------
+## debug by hand
+rostopic pub <topic> geometry_msgs/Twist -- '[lx, ly, lz]' '[ax, ay, az]'
+rostopic pub <topic> std_msgs/Empty 
+
+
+
+rostopic pub /tello_0/land std_msgs/Empty 
+rostopic pub /tello_1/land std_msgs/Empty
+rostopic pub /tello_2/land std_msgs/Empty
+
+===========================================================
+
+TODO:
+	test the feasibility of synchronized control of three drones
+	
+===========================================================
+1st test
+	failed to stop by the flight control node
+2nd test
+	change the loop rate to 10
+	successfully stop individually by typing command in the terminal

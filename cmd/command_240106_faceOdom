@@ -1,0 +1,136 @@
+# workflow
+# connect tello_0, tello_1
+roslaunch tello_driver three_tello_test_240106.launch 
+
+-----------------------------------------------------------
+# check battery
+rostopic echo /tello_0/status | grep battery
+rostopic echo /tello_1/status | grep battery
+
+
+-----------------------------------------------------------
+# flight control
+
+# to start sensor testing ==> /SOT
+# to takeoff ==> /takeoff
+# to start exp ==> /exp_mode
+# to terminate ==> /EOT
+
+roslaunch tello_pub three_tello_flight.launch
+
+-----------------------------------------------------------
+# sensors: aruco, face, yolo
+roslaunch tello_sub multi_pose_drones.launch
+
+
+# setup LiDAR
+lidar center height = (0.987 + 0.916) / 2
+
+# 0109 16:57
+lidar center height = (1.01 + 0.94) / 2
+
+
+# if use YOLO, modify the yolo tag
+roslaunch darknet_ros darknet_ros_twoDrone_230524.launch 
+
+-----------------------------------------------------------
+# odometry
+# use YOLO or not
+
+# roslaunch tello_pub tello_odom_all.launch 
+
+
+roslaunch tello_pub face_pose_odom.launch
+roslaunch tello_pub tello_drones_odom.launch
+
+-----------------------------------------------------------
+# record
+roslaunch record_rosbag record_rosbag_240106.launch bag_name:=face_odom
+
+# open launch file
+# open LiDAR
+# SOT --> takeoff --> exp_mode --> EOT
+
+-----------------------------------------------------------
+## debug by hand
+rostopic pub <topic> geometry_msgs/Twist -- '[lx, ly, lz]' '[ax, ay, az]'
+rostopic pub <topic> std_msgs/Empty 
+
+---
+rostopic pub /EOT std_msgs/Empty
+rostopic pub /SOT std_msgs/Empty
+---
+rostopic pub /tello_0/land std_msgs/Empty 
+rostopic pub /tello_1/land std_msgs/Empty
+rostopic pub /tello_2/land std_msgs/Empty
+---
+rostopic pub /tello_0/cmd_vel geometry_msgs/Twist -- '[0.0, 0.0, 0.4]' '[0.0, 0.0, 0.0]'
+rostopic pub /tello_0/cmd_vel geometry_msgs/Twist -- '[0.0, 0.0, 0.0]' '[0.0, 0.0, 0.0]'
+
+
+===========================================================
+
+TODO:
+	test the feasibility of two drone capturing the odometry of human
+	hover and record human moving face motion
+	move and record human standing face motion
+	
+	
+===========================================================
+
+0106
+
+
+21:45 exp
+	actor not move, 
+	wrong update in tello_1 position due to the wrong initialization
+
+
+23:45 exp
+	the multi-drone VIO is awkward
+	drone 0 get correct position
+	drone 1 initialized to wrong position
+	two bagfiles are not synchronized!
+	need to record and initialize before takeoff! 
+	might be the coordinate issue...?
+	
+2nd exp
+--------------------------
+0109
+
+1st exp
+	failed to run the face pose node
+	=> not open !!
+	
+2nd exp
+	wrong initialization
+	also human walk-in is not preferred
+	let the actor already initialized in the image plane is prefered!
+
+-------------------------
+0110
+
+1st exp
+	success
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

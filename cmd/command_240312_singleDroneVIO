@@ -1,0 +1,122 @@
+# workflow
+# fly with tello_0
+roslaunch tello_driver tello_node_img_repub.launch
+
+-----------------------------------------------------------
+# check battery
+rostopic echo /tello_1/status | grep battery
+rostopic echo /tello_0/status | grep battery
+
+-----------------------------------------------------------
+# odometry ESKF-Q
+roslaunch tello_pub tello_drones_odom.launch testMultiDrone:=false
+
+# realsense
+roslaunch realsense2_camera rs_camera_aruco.launch
+
+assume the rotation to I0 is
+R_realsense_to_I0 = [1.0, 0.0, 0.0
+		      0.0, 0.0, 1.0
+		      0.0, -1.0, 0.0]
+
+-----------------------------------------------------------
+# flight control
+# tello_0
+# circle velocity publisher
+# SOT means start flying!!
+roslaunch tello_pub 240312_tello_fix_traj_track.launch traj_type:=circle
+
+# circle velocity command
+0.0, 0.0, 0.0, 0.0
+0.0, 0.314, 0.0, -0.314
+0.0, 0.5, 0.0, -0.5
+
+# square velocity
+roslaunch tello_pub 240312_tello_fix_traj_track.launch square_vel:=0.314
+roslaunch tello_pub 240312_tello_fix_traj_track.launch square_vel:=0.5
+
+-----------------------------------------------------------
+# record
+roslaunch record_rosbag record_rosbag_manual_240312.launch
+
+-----------------------------------------------------------
+## debug by hand
+rostopic pub <topic> geometry_msgs/Twist -- '[lx, ly, lz]' '[ax, ay, az]'
+rostopic pub <topic> std_msgs/Empty 
+
+---
+rostopic pub /EOT std_msgs/Empty
+rostopic pub /SOT std_msgs/Empty
+rostopic pub /exp_mode std_msgs/Empty
+rostopic pub /takeoff std_msgs/Empty 
+---
+rostopic pub /tello_0/land std_msgs/Empty 
+rostopic pub /tello_1/land std_msgs/Empty
+rostopic pub /tello_2/land std_msgs/Empty
+---
+rostopic pub /tello_0/cmd_vel geometry_msgs/Twist -- '[0.0, 0.0, 0.4]' '[0.0, 0.0, 0.0]'
+rostopic pub /tello_0/cmd_vel geometry_msgs/Twist -- '[0.0, 0.0, 0.0]' '[0.0, 0.0, 0.0]'
+
+
+===========================================================
+
+TODO:
+	test the odometry compared with realsense measurement
+	
+===========================================================
+
+0312
+	1st 
+		not very good
+		only run for a corner
+		using manual publish might be better
+	2nd
+		success with initial a little bit drifting
+		initial position to camera
+			height 1.00  m
+			front  2.59  m
+			right  1.215 m
+		let the drone fly in middle
+	sq1
+		initial position to camera
+			height 1.00  m
+			front  2.59  m
+			right  0.813 m
+		success with problematic time stamps
+			takeoff part is not recorded in the ESKF-Q
+			SOT need to be publish first to launch the ESKF-Q
+			then drone takeoff and command 
+	sq2
+		initial position to camera
+			height 1.00  m
+			front  2.59  m
+			right  0.813 m		
+		first attempt is awkward
+		second attempt successes!
+	sq3
+		initial position to camera
+			height 1.00  m
+			front  2.59  m
+			right  0.813 m	
+		first attempt more triangular
+		second attempt more trapzoidal
+		third attempt still more triangular
+		fourth attempt successes!		
+	cir1
+		initial position to camera
+			height 1.00  m
+			front  3.34  m
+			right  0.813 m
+		first attempt: 0.314 is too slow, battery drop too fast
+		second attempt: battery drop too fast
+		shoot closer!
+		circle trajectory is hard to shoot the pose when drone is almost perpendicular to the camera
+
+
+
+
+
+
+
+
+

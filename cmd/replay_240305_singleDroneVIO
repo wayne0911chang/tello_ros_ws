@@ -1,0 +1,62 @@
+# odometry
+# tello_0 only
+
+roslaunch tello_pub tello_drones_odom.launch testMultiDrone:=false
+
+-----------------------------------------------------------
+# record and replay
+
+roslaunch record_rosbag replay_record_eskf_new_240305.launch
+
+
+-----------------------------------------------------------
+## debug by hand
+rostopic pub <topic> geometry_msgs/Twist -- '[lx, ly, lz]' '[ax, ay, az]'
+rostopic pub <topic> std_msgs/Empty 
+
+---
+rostopic pub /EOT std_msgs/Empty
+rostopic pub /SOT std_msgs/Empty
+rostopic pub /exp_mode std_msgs/Empty
+rostopic pub /takeoff std_msgs/Empty 
+---
+rostopic pub /tello_0/land std_msgs/Empty 
+rostopic pub /tello_1/land std_msgs/Empty
+rostopic pub /tello_2/land std_msgs/Empty
+---
+rostopic pub /tello_0/cmd_vel geometry_msgs/Twist -- '[0.0, 0.0, 0.4]' '[0.0, 0.0, 0.0]'
+rostopic pub /tello_0/cmd_vel geometry_msgs/Twist -- '[0.0, 0.0, 0.0]' '[0.0, 0.0, 0.0]'
+
+
+===========================================================
+
+TODO:
+	test the odometry performance after correct the body frame transformation and the quaternion product
+	also estimate the odometry of the original eskf
+	
+===========================================================
+
+
+0309
+	ESKF-Q:
+		Cir-1 done
+----------------------------------
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

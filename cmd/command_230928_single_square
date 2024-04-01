@@ -1,0 +1,75 @@
+workflow
+# connect tello_1 --> marker id=25 --> ifname_1
+# connect tello_0 --> no marker    --> ifname_0
+
+roslaunch tello_driver tello_node_img_repub.launch
+
+------------------------------------------------------------------------------------
+
+# check battery
+rostopic echo /tello_1/status | grep battery
+rostopic echo /tello_0/status | grep battery
+
+------------------------------------------------------------------------------------
+
+# flight control
+# manual flight test and takeoff flight test
+# check for tello_0 or tello_1
+
+231003_tello_fix_traj_track.launch
+------------------------------------------------------------------------------------
+
+# record
+# check for tello_0 or tello_1
+
+roslaunch record_rosbag record_rosbag_manual_square_230907.launch
+
+-------------------------------------------------------------------------------------
+
+## debug by hand
+rostopic pub <topic> geometry_msgs/Twist -- '[lx, ly, lz]' '[ax, ay, az]'
+rostopic pub <topic> std_msgs/Empty 
+rostopic pub /EOT std_msgs/Empty 
+rostopic pub /SOT std_msgs/Empty 
+
+
+=================================================================================================
+TODOs:
+	square trajectory 1x1 only
+		rotated 
+		not rotated
+	both drone
+		tello_0
+		tello_1
+=================================================================================================
+exp:
+	1st test
+	
+	----
+	2nd test
+	
+	===============
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

@@ -1,0 +1,130 @@
+# workflow
+# connect tello_0, tello_1, tello_2
+roslaunch tello_driver three_tello_test_240106.launch 
+
+-----------------------------------------------------------
+# check battery
+rostopic echo /tello_0/status | grep battery
+rostopic echo /tello_1/status | grep battery
+rostopic echo /tello_2/status | grep battery
+
+-----------------------------------------------------------
+# flight control
+# to takeoff ==> /takeoff
+# to start sensor testing ==> /SOT
+# to start exp ==> /exp_mode
+# to terminate ==> /EOT
+
+roslaunch tello_pub three_tello_flight.launch
+
+-----------------------------------------------------------
+# sensors: aruco
+roslaunch tello_sub multi_pose_drones.launch
+
+# use LiDAR
+lidar center height = (0.987 + 0.916) / 2
+
+# 0109 16:57
+lidar center height = (1.01 + 0.94) / 2
+
+-----------------------------------------------------------
+# odometry
+# multi-drone VIO only
+
+# roslaunch tello_pub faceOdom.launch
+# roslaunch tello_pub tello_drones_odom.launch
+# roslaunch tello_pub tello_odom_all.launch 
+
+roslaunch tello_pub tello_drones_odom.launch
+
+-----------------------------------------------------------
+# record
+roslaunch record_rosbag record_rosbag_240106.launch bag_name:=VIO
+
+
+-----------------------------------------------------------
+## debug by hand
+rostopic pub <topic> geometry_msgs/Twist -- '[lx, ly, lz]' '[ax, ay, az]'
+rostopic pub <topic> std_msgs/Empty 
+
+---
+rostopic pub /EOT std_msgs/Empty
+rostopic pub /SOT std_msgs/Empty
+rostopic pub /exp_mode std_msgs/Empty
+rostopic pub /takeoff std_msgs/Empty 
+---
+rostopic pub /tello_0/land std_msgs/Empty 
+rostopic pub /tello_1/land std_msgs/Empty
+rostopic pub /tello_2/land std_msgs/Empty
+---
+rostopic pub /tello_0/cmd_vel geometry_msgs/Twist -- '[0.0, 0.0, 0.4]' '[0.0, 0.0, 0.0]'
+rostopic pub /tello_0/cmd_vel geometry_msgs/Twist -- '[0.0, 0.0, 0.0]' '[0.0, 0.0, 0.0]'
+
+
+===========================================================
+
+TODO:
+	****REMEMBER TURN ON THE LIGHT BEFORE TAKEOFF!!****
+	
+	test the aruco positioning after correct the measurement update
+	
+	
+===========================================================
+
+0106
+
+1st exp
+	on-floor distance:
+		0 --> 1:	0.75, 4.0, 0.0
+		0 --> 2: 	0.75, 2.5, 0.0
+	command would not be executed in synchronization!
+	incorrect odometry estimation!
+		image plane data retrieved in roll-tilted camera frame
+	
+	
+2nd exp
+	still not convert back to correct un-tilt camera frame!
+	the transform combination is wrong!
+		original gyroToCamTilt has consider the tilting camera frame!
+		innovation under the tilted frame
+
+------------------------
+0109
+
+1st exp
+	z --> y --> y --> z
+	LiDAR success!
+	ESKF also success!
+		observe that aruco could ruin the real value of estimation in fast moving case
+		
+	CODE MODIFY TODO
+		publish init state regardless of SOT --> not good
+		try to disable aruco measurement in case command received!
+		multiDroneOdom.cpp should know the cmd vel!
+
+2nd exp
+	just move to a good hover point s.t. LiDAR could see
+	hover in z
+	tello_1 data becomes tello_2
+	tello_2 data becomes tello_1
+	need to republish for estimating correct data!
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
