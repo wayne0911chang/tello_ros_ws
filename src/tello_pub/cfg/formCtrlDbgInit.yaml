@@ -1,0 +1,45 @@
+drone0:
+  position: [0.156, 0.251, 1.045]
+  velocity: [0.0, 0.0, 0.0]
+  orientation: [0.7010, -0.0092, -0.0009, -0.7131]
+  angular_velocity: [0.0, 0.0, 0.0]
+
+drone1:
+  position_init: [0.778, 3.740, 0.146]
+  orientation_init: [0.927947, -0.012551, -0.372501,
+  		      -0.370791, 0.070257, -0.926055,
+  		      0.037794, 0.997450, 0.060541]
+  position: [0.205, 0.766, -0.367]
+  velocity: [0.0, 0.0, 0.0]
+  orientation: [0.4965, -0.5096, -0.4923, -0.5015]
+  angular_velocity: [0.0, 0.0, 0.0]
+
+drone2:
+  position_init: [-0.722, 2.5, 0.0]
+  orientation_init: [1.0, 0.0, 0.0,
+  		      0.0, 0.0, -1.0,
+  		      0.0, 1.0, 0.0]
+  position: [0.0, 1.0, 0.0]
+  velocity: [0.0, 0.0, 0.0]
+  orientation: [0.0363, -0.7011, -0.7117, 0.0245]
+  angular_velocity: [0.0, 0.0, 0.0]
+
+human:
+  STAND_STILL:
+    position_init: [-0.06, 0.72, 1.20]
+    orientation_init: [-0.999565, 0.029075, 0.005008,
+    			 0.029467, 0.975546, 0.217813,
+    			 0.001448, 0.217866, -0.975078]
+    position: [0.0, 0.0, 0.0]
+    velocity: [0.0, 0.0, 0.0]
+    orientation: [1.0, 0.0, 0.0, 0.0]
+    angular_velocity: [0.0, 0.0, 0.0]
+  GO_STRAIGHT:
+    position_init: [-0.06, 0.72, 1.20]
+    orientation_init: [-0.999565, 0.029075, 0.005008,
+    			 0.029467, 0.975546, 0.217813,
+    			 0.001448, 0.217866, -0.975078]
+    position: [0.0, 0.0, 0.0]
+    velocity: [0.0, 0.0, 0.0]
+    orientation: [1.0, 0.0, 0.0, 0.0]
+    angular_velocity: [0.0, 0.0, 0.0]

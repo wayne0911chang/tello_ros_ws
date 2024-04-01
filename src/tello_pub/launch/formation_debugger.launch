@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<launch>
+    <!-- debug mode -->
+    <!--    debug_single: true -->
+    <!--        testing single 1st-order system -->
+    <arg name="debug_single"    default="false"/>
+    <!-- human mode -->
+    <!--    0: stand still -->
+    <!--    1: go straight -->
+    <!--    2: CONST_VEL_WALKING -->
+    <!--    3: LOA_IS_FACING -->
+    <arg name="human_mode"     default="0"/>
+    <!-- <arg name="human_mode"     default="1"/> -->
+    <!-- <arg name="human_mode"     default="2"/> -->
+    <!-- <arg name="human_mode"     default="3"/> -->
+
+    <!-- <arg name="init_cfg"        default="$(find tello_pub)/cfg/formCtrlDbgInitRmat.yaml"/> -->
+    <!-- <arg name="init_cfg"        default="$(find tello_pub)/cfg/formCtrlDbgInitIdeal.yaml"/> -->
+    <!-- <arg name="init_cfg"        default="$(find tello_pub)/cfg/formCtrlDbgInitIdeal-newBodyFrame.yaml"/> -->
+    <arg name="init_cfg"        default="$(find tello_pub)/cfg/formCtrlDbgInitRmat-newBodyFrame.yaml"/>
+
+    <node pkg="tello_pub" type="geoFormCtrlDbg" name="geoFormCtrlDbg" output="screen">
+        <param name="human_mode"        value="$(arg human_mode)"/>
+        <param name="init_cfg"          value="$(arg init_cfg)"/>
+        <param name="debug_single"      value="$(arg debug_single)"/>
+        <param name="no_roll_pitch"     value="false"/>
+        <param name="height_offset"     value="0.5"/>
+        
+    </node> 
+    
+</launch>

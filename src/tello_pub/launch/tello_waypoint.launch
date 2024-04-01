@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<launch>
+	<group ns="tello_1">
+		<node pkg="tello_pub" name="tello_waypoint_debugger" type="tello_waypoint_debugger_named.py" output="screen" />
+	</group>
+
+</launch>

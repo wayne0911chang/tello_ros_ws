@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- for aruco node -->
+  <arg name="default_cam_info"          default="false"/>
+  <arg name="camera"                    default="camera"/>
+  
+  <group ns="$(arg camera)">
+    <!-- add the aruco node -->
+    <node pkg="tello_sub" type="realSenseArUco" name="realSenseArUco" output="screen">
+        <param name="default_cam_info"  value="$(arg default_cam_info)"/>
+    </node>
+  </group>
+
+</launch>

@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name="t_smpl"  value="0.01"/>
+
+    <!-- generate original ESKF + Quaternion as Vec4d result -->
+    <node pkg="tello_pub" type="multiDroneOdom" name="ESKF_Q4d" output="screen"> 
+        <param name="useImuQuat"        value="false"/>
+        <param name="useQuatVec4d"      value="true"/>
+        <param name="testMultiDrone"    value="false"/>
+        <param name="smpl_time"         value="$(arg t_smpl)"/>
+    </node>
+    <!-- generate original ESKF result -->
+    <node pkg="tello_pub" type="multiDroneOdom" name="ESKF" output="screen"> 
+        <param name="useImuQuat"        value="false"/>
+        <param name="useQuatVec4d"      value="false"/>
+        <param name="testMultiDrone"    value="false"/>
+        <param name="smpl_time"         value="$(arg t_smpl)"/>
+    </node>
+    <!-- generate ESKF-Q result -->
+    <node pkg="tello_pub" type="multiDroneOdom" name="ESKF_Q" output="screen">
+        <param name="useImuQuat"        value="true"/>
+        <param name="testMultiDrone"    value="false"/>
+        <param name="smpl_time"         value="$(arg t_smpl)"/>
+    </node>
+    <!-- remap the camera aruco pose -->
+    <!--    if use_measured_init, then determine the initial camera position by aruco -->
+    <group ns="camera">
+        <node pkg="tello_pub" type="repubRS" name="repub_realsense" output="screen">
+            <param name="use_measured_init" value="false"/>
+            <param name="height"            value="1.0"/>
+            <param name="front"             value="-2.59"/>
+            <param name="right"             value="-0.813"/>
+        </node>
+    </group>
+</launch>

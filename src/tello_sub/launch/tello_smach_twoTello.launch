@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<launch>
+        <!-- <arg name="viz_img_type" default="image_raw"/> -->
+    <!-- use the namespace to control the topic names -->
+    <!-- under same namespace the nodes would subscribe to the topics in the same namespace -->
+        
+        
+	<group ns="tello_1">
+        <node pkg="tello_sub" type="tello_smach_vel_named.py" name="tello_smach_vel_named" output="screen"/>
+	</group>
+        
+	<!-- <group ns="tello_3">
+        <node pkg="tello_sub" type="tello_smach_vel_named.py" name="tello_smach_vel_named" output="screen"/>
+	</group> -->
+
+</launch>

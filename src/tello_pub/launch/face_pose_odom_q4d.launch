@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<launch>
+    <!-- generate original ESKF result -->
+    <arg name="reinit_time"     default="5.0"/>
+    <arg name="reinit_trace"    default="0.05"/>
+    <arg name="smpl_time"       default="0.05"/>
+
+    <node pkg="tello_pub" type="faceOdom" name="faceOdom_q4d" output="screen" >
+        <param name="useYOLO"       value="false"/>
+        <param name="reinit_time"   value="$(arg reinit_time)"/>
+        <param name="reinit_trace"  value="$(arg reinit_trace)"/>
+        <param name="smpl_time"     value="$(arg smpl_time)"/>
+        <param name="debug_set_SOT" value="false"/>
+        <param name="useQuatVec4d"  value="true"/>
+    </node>
+
+</launch>

@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<launch>
+    <!-- two tello reset velocity node -->
+	<group ns="tello_0">
+        <node pkg="tello_pub" type="tello_reset_vel_named.py" name="tello_reset_vel_named" output="screen" />
+	</group>
+    
+	<group ns="tello_1">
+        <node pkg="tello_pub" type="tello_reset_vel_named.py" name="tello_reset_vel_named" output="screen" />
+	</group>
+
+    <group ns="tello_2">
+        <node pkg="tello_pub" type="tello_reset_vel_named.py" name="tello_reset_vel_named" output="screen" />
+	</group>
+
+</launch>

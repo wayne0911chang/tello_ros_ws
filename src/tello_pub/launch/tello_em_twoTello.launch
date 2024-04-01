@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<launch>
+    <!-- two tello emergency nodes -->
+    <arg name="handle_all" default="false"/>
+
+	<group ns="tello_1">
+                <node pkg="tello_pub" type="tello_em_named.py" name="tello_emergency_named" output="screen">
+                        <param name="is_all" value="$(arg handle_all)"/>
+                </node>
+	</group>
+	<!-- <group ns="tello_3">
+                <node pkg="tello_pub" type="tello_em_named.py" name="tello_emergency_named" output="screen">
+                        <param name="is_all" value="$(arg handle_all)"/>
+                </node>
+	</group> -->
+
+</launch>

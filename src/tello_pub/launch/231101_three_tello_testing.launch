@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<launch>
+
+    <!-- <arg name="test_mode"   default="static"/> -->
+    <arg name="test_mode"       default="hover"/>
+    <!-- <arg name="test_mode"   default="move"/> -->
+
+    <!-- formatioin direction -->
+    <!-- <arg name="des_dir_form"      default="x"/> -->
+    <arg name="des_dir_form"    default="y"/>
+    <!-- <arg name="des_dir_form"      default="z"/>
+    <arg name="des_dir_form"    default="yaw"/> -->
+
+    <!-- in formation or not -->
+    <arg name="in_form"         default="true"/>
+
+    
+    
+    <!-- use the namespace to control the topic names -->
+    <!-- under same namespace the nodes would subscribe to the topics in the same namespace -->
+    
+ 	<group ns="tello_0">
+        <node pkg="tello_pub" type="tello_three_drone_testing.py" name="three_drone_testing" output="screen">
+            <param name="mode"      value="$(arg test_mode)"/>
+            <param name="des_dir"   value="$(arg des_dir_form)"/>
+            <param name="in_form"   value="$(arg in_form)"/>
+            <!-- <param name="in_form"   value="false"/> -->
+        </node>
+        
+	</group>   
+
+ 	<group ns="tello_1">
+        <node pkg="tello_pub" type="tello_three_drone_testing.py" name="three_drone_testing" output="screen">
+            <param name="mode"  value="$(arg test_mode)"/>
+            <param name="des_dir"   value="$(arg des_dir_form)"/>
+            <param name="in_form"   value="$(arg in_form)"/>
+            <!-- <param name="in_form"   value="false"/> -->
+        </node>
+        
+	</group>   
+
+ 	<group ns="tello_2">
+        <node pkg="tello_pub" type="tello_three_drone_testing.py" name="three_drone_testing" output="screen">
+            <param name="mode"  value="$(arg test_mode)"/>
+            <param name="des_dir"   value="$(arg des_dir_form)"/>
+            <param name="in_form"   value="$(arg in_form)"/>
+            <!-- <param name="in_form"   value="false"/> -->
+        </node>
+        
+	</group>   
+
+
+</launch>

@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<launch>
+
+    <!-- use the namespace to control the topic names -->
+    <!-- under same namespace the nodes would subscribe to the topics in the same namespace -->
+        
+
+ 	<!-- <group ns="tello_0">
+        <node pkg="tello_sub" type="multiArUcoPose" name="multiArUcoPose" output="screen"/>
+            <param name="aruco_estimate"        value="true"/>
+            <param name="face_estimate"         value="false"/>
+            
+	</group>    -->
+
+	<group ns="tello_1">
+        <node pkg="tello_sub" type="multiArUcoPose" name="multiArUcoPose" output="screen">
+            <param name="aruco_estimate"        value="false"/>
+            <param name="face_estimate"         value="true"/>
+            <param name="yolo_estimate"         value="false"/>
+            
+        </node>
+    </group>
+        
+	<!-- <group ns="tello_2">
+        <node pkg="tello_sub" type="multiArUcoPose" name="multiArUcoPose" output="screen"/>
+            <param name="aruco_estimate"        value="false"/>
+            <param name="face_estimate"         value="false"/>
+
+	</group> -->
+
+</launch>

@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name="smpl_time"   default="0.05"/>
+    <!-- <arg name="gain_matrix" default="$(find tello_pub)/cfg/twistGain.yaml"/> -->
+    <arg name="gain_matrix" default="$(find tello_pub)/cfg/twistGainDefault.yaml"/>
+    <!-- <arg name="gain_matrix" default="$(find tello_pub)/cfg/twistGain_0.5.yaml"/> -->
+    <!-- <arg name="gain_matrix" default="$(find tello_pub)/cfg/twistGain_2.0.yaml"/> -->
+
+    <node pkg="tello_pub" type="geoFormCtrl" name="geoFormCtrl" output="screen">
+        <param name="smpl_time"         value="$(arg smpl_time)"/>
+        <param name="des_dist_xy"       value="1.5"/>
+        <!-- <param name="dist_xy_max"       value="3.5"/> -->
+        <param name="dist_xy_max"       value="3"/>
+        <param name="des_roll"          value="0.103"/>     
+        <param name="des_theta"         value="1.57077"/>
+        <param name="des_face_theta"    value="0.0"/>
+        <param name="gain_matrix"       value="$(arg gain_matrix)"/>
+        <param name="cmd_disable"       value="false"/>
+        <param name="angvel_mode"       value="false"/>
+        <param name="height_offset"     value="0.5"/>
+        <param name="alt_rel_pose"      value="true"/>
+        <param name="pub_des_pose"      value="true"/>
+        <!-- set the angular -->
+        <param name="no_roll_pitch"     value="false"/>
+        <!-- smooth the human vel by avg filter -->
+        <param name="smooth_human_vel"  value="true"/>
+        <param name="human_vel_wndw"    value="10"/>
+    </node> 
+</launch>

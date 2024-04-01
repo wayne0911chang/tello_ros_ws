@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<launch>
+
+    <!-- use the namespace to control the topic names -->
+    <!-- under same namespace the nodes would subscribe to the topics in the same namespace -->
+    
+    <!-- debug with arbitrary face pose measurement -->
+    <arg name="debug_face"  default="false"/>
+    <!-- <arg name="debug_face"  default="true"/> -->
+    <arg name="debug_mode_face"  default="static"/>
+    <!-- <arg name="debug_mode_face"  default="linear"/> -->
+    <arg name="face_cfg"  default="$(find tello_pub)/cfg/facePoseDbg.yaml"/>
+
+ 	<group ns="tello_0">
+        <node pkg="tello_sub" type="multiPoseEstimate" name="multiPoseEstimate" output="screen">
+            <param name="aruco_estimate"        value="true"/>
+            <param name="face_estimate"         value="false"/>
+            <param name="yolo_estimate"         value="false"/>
+        </node>
+	</group>   
+
+	<group ns="tello_1">
+        <node pkg="tello_sub" type="multiPoseEstimate" name="multiPoseEstimate" output="screen">
+            <param name="aruco_estimate"        value="false"/>
+            <!-- <param name="face_estimate"         value="true"    unless="$(arg debug_face)"/> -->
+            <param name="face_estimate"         value="true"/>
+            <param name="debug_face"            value="$(arg debug_face)"/>
+            <param name="yolo_estimate"         value="false"/>
+            <param name="face_thresh"           value="55.5"/>
+            <param name="useNTHU"               value="false"/>
+        </node>
+        <!-- arbitrary face pose -->
+        <!-- <node if="$(arg debug_face)" pkg="tello_pub" type="facePoseDbg" name="facePoseDbg" output="screen">
+            <param name="debug_mode"        value="$(arg debug_mode_face)"/>
+            <param name="face_cfg"          value="$(arg face_cfg)"/>
+        </node> -->
+    </group>
+        
+	<group ns="tello_2">
+        <!-- <node pkg="tello_sub" type="multiPoseEstimate" name="multiPoseEstimate" output="screen">
+            <param name="aruco_estimate"        value="true"/>
+            <param name="face_estimate"         value="false"/>
+            <param name="yolo_estimate"         value="false"/>
+        </node> -->
+	</group>
+
+</launch>

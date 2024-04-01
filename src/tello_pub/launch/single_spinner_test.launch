@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<launch>
+    <!-- three asynspinner setting -->
+    <arg name="default_spinner"     default="false"/>
+    <arg name="num_pub"             default="3"/>
+    <arg name="num_thread"          default="3"/>
+    
+    <node pkg="tello_pub" type="spinnerTest" name="spinnerTest" output="screen">
+        <param name="use_spin"      value="$(arg default_spinner)"/>
+        <param name="num_pub"       value="$(arg num_pub)"/>
+        <param name="num_thread"    value="$(arg num_thread)"/>
+    </node>
+</launch>

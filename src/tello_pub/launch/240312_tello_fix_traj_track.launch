@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<launch>
+
+    <!-- use the namespace to control the topic names -->
+    <!-- under same namespace the nodes would subscribe to the topics in the same namespace -->
+    <arg name="traj_type"   default="square"/>
+    <!-- <arg name="traj_type"   default="square"/> -->
+
+    <arg name="square_vel"   default="0.5"/>
+    
+ 	<group ns="tello_0">
+        <!-- <node pkg="tello_pub" type="fixedTrajTracker" name="fixedTrajTracker" output="screen">
+            <param name="useESKF"       value="false"/>
+            <param name="opl_cmd"       value="true"/>
+            <param name="cmd_vel_y"       value="0.35"/>
+            <param name="cmd_vel_x"       value="0.4"/>
+            <param name="cmd_angvel_z"       value="0.4"/>
+            <param name="smpl_time"     value="0.02"/>
+            
+            <param name="rotated_traj"          value="true"/>
+            <param name="square_side_length"    value="2.0"/>
+            <param name="traj_height"           value="1.2"/>
+            
+        </node> -->
+        <node pkg="tello_pub" type="tello_waypoint_debugger_named.py" name="tello_waypoint_debugger_named" output="screen">
+            <param name="traj_type"     value="$(arg traj_type)"/>
+            <param name="square_vel"    value="$(arg square_vel)"/>
+        </node>
+        
+	</group>   
+
+	<!-- <group ns="tello_1">
+        <node pkg="tello_pub" type="fixedTrajTracker" name="fixedTrajTracker" output="screen">
+            <param name="useESKF"       value="false"/>
+            <param name="opl_cmd"       value="true"/>
+            <param name="cmd_vel_y"       value="0.35"/>
+            <param name="cmd_vel_x"       value="0.4"/>
+            <param name="cmd_angvel_z"       value="0.4"/>
+            <param name="smpl_time"     value="0.02"/>
+            
+            <param name="rotated_traj"          value="true"/>
+            <param name="square_side_length"    value="2.0"/>
+            <param name="traj_height"           value="1.2"/>
+            
+        </node>
+        <node pkg="tello_pub" type="tello_waypoint_debugger_named.py" name="tello_waypoint_debugger_named" output="screen"/>
+        
+    </group> -->
+        
+	<!-- <group ns="tello_2">
+        <node pkg="tello_sub" type="multiPoseEstimate" name="multiPoseEstimate" output="screen"/>
+            <param name="aruco_estimate"        value="false"/>
+            <param name="face_estimate"         value="false"/>
+            <param name="yolo_estimate"         value="true"/>
+
+	</group> -->
+
+</launch>

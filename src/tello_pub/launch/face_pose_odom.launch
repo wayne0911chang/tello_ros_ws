@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<launch>
+    <!-- generate original ESKF result -->
+    <arg name="reinit_time"     default="5.0"/>
+    <arg name="reinit_trace"    default="0.05"/>
+    <arg name="smpl_time"       default="0.05"/>
+    <arg name="debug_mode"      default="false"/>
+
+    <node pkg="tello_pub" type="faceOdom" name="faceOdom" output="screen" >
+        <param name="useYOLO"       value="false"/>
+        <param name="reinit_time"   value="$(arg reinit_time)"/>
+        <param name="reinit_trace"  value="$(arg reinit_trace)"/>
+        <param name="smpl_time"     value="$(arg smpl_time)"/>
+        <param name="debug_set_SOT" value="false"/>
+        <param name="useQuatVec4d"  value="false"/>
+
+    </node>
+
+    <node if="$(arg debug_mode)" pkg="tello_pub" type="faceOdom" name="faceOdom_dug" output="screen"  launch-prefix="gdb -ex run --args">
+        <param name="useYOLO"       value="true"/>
+        <param name="reinit_time"   value="$(arg reinit_time)"/>
+        <param name="reinit_trace"  value="$(arg reinit_trace)"/>
+        <param name="smpl_time"     value="$(arg smpl_time)"/>
+        <param name="debug_set_SOT" value="true"/>
+
+    </node>
+</launch>

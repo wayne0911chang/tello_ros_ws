@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name="t_smpl"  value="0.01"/>
+    <!-- <arg name="angle"   value="0.017"/> -->
+    <!-- <arg name="angle"   value="0.034"/> -->
+    <!-- <arg name="angle"   value="0.087"/> -->
+    <!-- <arg name="angle"   value="0.17"/> -->
+    <arg name="angle"   value="0.34"/>
+
+    <!-- generate original ESKF result -->
+    <node pkg="tello_pub" type="multiDroneOdom" name="ESKF" output="screen"> 
+        <param name="useImuQuat"        value="false"/>
+        <param name="useQuatVec4d"      value="false"/>
+        <param name="testMultiDrone"    value="false"/>
+        <param name="add_perturb"       value="true"/>
+        <param name="ang_perturb"       value="$(arg angle)"/>
+        <param name="smpl_time"         value="$(arg t_smpl)"/>
+    </node>
+
+</launch>

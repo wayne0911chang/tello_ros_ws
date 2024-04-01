@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<launch>
+    <!-- generate original ESKF result -->
+    <arg name="useImuQuat"          default="true"/>
+    <arg name="testMultiDrone"      default="true"/>
+    <arg name="smpl_time_single"    default="0.01"/>
+    <!-- <arg name="smpl_time_multi"    default="0.05"/> -->
+    <arg name="smpl_time_multi"     default="0.01"/>
+    <arg name="cmd_vel_thr"         default="0.1"/>
+
+    <!-- debug mode -->
+    <arg name="debug_mode"    default="false"/>
+
+    <!-- add fake drone_0 imu/odom -->
+    <group ns="tello_0">
+        <node if="$(arg debug_mode)" pkg="tello_pub" type="debug_static_tello.py" name="debug_static_tello" output="screen">
+            <param name="drone_name" value="/tello_0"/>
+        </node>
+    </group>
+    <!-- add fake drone_1 imu/odom -->
+    <group ns="tello_1">
+        <node if="$(arg debug_mode)" pkg="tello_pub" type="debug_static_tello.py" name="debug_static_tello" output="screen">
+            <param name="drone_name" value="/tello_1"/>
+        </node>
+    </group>
+
+    <!-- main front-end odometry node -->
+    <node pkg="tello_pub" type="multiDroneOdom" name="multiDroneOdom" output="screen">
+        <param name="useImuQuat" value="$(arg useImuQuat)"/>
+        <param name="cmd_vel_thr" value="$(arg cmd_vel_thr)"/>
+        <param name="testMultiDrone" value="$(arg testMultiDrone)"/>
+        <!-- change the smpl_time by drone flag -->
+        <param name="smpl_time" value="$(arg smpl_time_single)" unless="$(arg testMultiDrone)"/>
+        <param name="smpl_time" value="$(arg smpl_time_multi)" if="$(arg testMultiDrone)"/>
+    </node>
+</launch>
