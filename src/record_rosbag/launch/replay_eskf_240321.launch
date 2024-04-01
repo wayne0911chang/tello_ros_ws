@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<launch>
+
+    <arg name="bag_dir"         value="$(env HOME)/wayne_temp/tello_ws/bagfiles"/>
+
+    <arg name="circle_traj"     value="true"/>
+    <arg name="bag_name"        value="cir1"/>
+    <!-- <arg name="bag_name"        value="cir2"/> -->
+    <!-- <arg name="bag_name"        value="cir3"/> -->
+    
+    <arg name="square_traj"     value="false"/>
+    <!-- <arg name="bag_name"        value="sq1"/> -->
+    <!-- <arg name="bag_name"        value="sq2"/> -->
+    <!-- <arg name="bag_name"        value="sq3"/> -->
+
+    <!-- evaluate the circle traj -->
+    <arg name="play_dir"        default="231015/tello_1_circle_imu_odom_1.bag"/>
+    <arg name="play_dir_lidar"  default="231015/tello_1_circle_traj_lidar_1.bag"/>
+    <!-- <arg name="play_dir" default="231015/tello_1_circle_imu_odom_2.bag"/> -->
+    <!-- <arg name="play_dir_lidar"  default="231015/tello_1_circle_traj_lidar_2.bag"/> -->
+    <!-- <arg name="play_dir" default="231015/tello_1_circle_imu_odom_3.bag"/> -->
+    <!-- <arg name="play_dir_lidar"  default="231015/tello_1_circle_traj_lidar_3.bag"/> --> 
+    
+    <!-- evaluate the square traj -->
+    <!-- <arg name="play_dir"        default="240312/sq1/tello_0_circle_imu_odom_2024-03-12-21-44-03.bag"/> -->
+    <!-- <arg name="play_dir_aruco"  default="240312/sq1/tello_0_circle_img_2024-03-12-21-44-03.bag"/> -->
+    <!-- <arg name="play_dir" default="240312/sq2/tello_0_circle_imu_odom_eskf_others_2024-03-12-22-14-47.bag"/> -->
+    <!-- <arg name="play_dir_aruco"  default="240312/sq2/tello_0_circle_img_2024-03-12-22-14-47.bag"/> -->
+    <!-- <arg name="play_dir" default="240312/sq3/tello_0_circle_imu_odom_eskf_others_2024-03-12-22-37-39.bag"/>
+    <arg name="play_dir_aruco"  default="240312/sq3/tello_0_circle_img_2024-03-12-22-37-39.bag"/> -->
+
+
+    <!-- record/replay -->
+    <!-- square -->
+    <node if="$(arg square_traj)" pkg="rosbag" type="play" name="replay_eskf_origin" output="screen" args="--clock $(arg bag_dir)/$(arg play_dir) --topic /tello_0/imu /tello_0/odom"/>
+    <node if="$(arg square_traj)" pkg="rosbag" type="play" name="replay_aruco_pose" output="screen" args="--clock $(arg bag_dir)/$(arg play_dir_aruco) --topic /camera/aruco_pose_arr"/>
+    <!-- <node if="$(arg square_traj)" pkg="rosbag" type="record" name="record_tello_0_eskf_aruco" args="record -o $(arg bag_dir)/$(arg save_dir)/tello_0_$(arg bag_name)-eskf /tello_0/eskf_state_full /tello_0/cov_trace /tello_0/bias /tello_0/eskf_odom /tello_0/quat_norm /tello_0/eskf_state_origin /tello_0/cov_trace_origin /tello_0/bias_origin /tello_0/eskf_odom_origin /tello_0/quat_norm_origin /tello_0/eskf_state_q4d /tello_0/cov_trace_q4d /tello_0/bias_q4d /tello_0/eskf_odom_q4d /tello_0/quat_norm_q4d /camera/realsense_odom /SOT"/> -->
+    
+    <!-- circle -->
+    <node if="$(arg circle_traj)" pkg="rosbag" type="play" name="replay_imu_odom" output="screen" args="--clock $(arg bag_dir)/$(arg play_dir) /tello_1/imu:=/tello_0/imu /tello_1/odom:=/tello_0/odom"/>
+    <node if="$(arg circle_traj)" pkg="rosbag" type="play" name="replay_lidar" output="screen" args="--clock $(arg bag_dir)/$(arg play_dir_lidar) /tello_1/odom_lidar:=/tello_0/odom_lidar"/>
+    <!-- <node if="$(arg circle_traj)" pkg="rosbag" type="record" name="record_tello_0_eskf_lidar" args="record -o $(arg bag_dir)/$(arg save_dir)/tello_0_$(arg bag_name)-eskf /tello_0/eskf_state_full /tello_0/cov_trace /tello_0/bias /tello_0/eskf_odom /tello_0/quat_norm /tello_0/eskf_state_origin /tello_0/cov_trace_origin /tello_0/bias_origin /tello_0/eskf_odom_origin /tello_0/quat_norm_origin /tello_0/eskf_state_q4d /tello_0/cov_trace_q4d /tello_0/bias_q4d /tello_0/eskf_odom_q4d /tello_0/quat_norm_q4d /tello_0/odom_lidar /SOT"/> -->
+
+</launch>

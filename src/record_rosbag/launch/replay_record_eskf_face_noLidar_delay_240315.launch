@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<launch>
+
+    <arg name="bag_dir"             value="$(env HOME)/wayne_temp/tello_ws/bagfiles"/>
+    <arg name="bag_name"            value="face_odom"/>
+    <arg name="d1"                  value="tello_1"/>
+    <arg name="d0"                  value="tello_0"/>
+    <arg name="save_dir"            default="240315"/>
+
+    <!-- evaluate the face traj -->
+    <arg name="play_dir_imu"        default="240109/faceOdom/face_odom-imu-odom-other_2024-01-10-09-00-18.bag"/>
+    <arg name="play_dir_aruco"      default="240109/faceOdom/face_odom-img_2024-01-10-09-00-18.bag"/>
+
+    <!-- publish topics -->
+    <!-- use the /SOT and /EOT in bagfiles -->
+    <!-- <node pkg="rostopic" type="rostopic" name="rostopic" args="pub /SOT std_msgs/Empty"/> -->
+
+    <!-- record/replay -->
+    <node pkg="rosbag" type="play" name="replay_imu_odom" output="screen" args="--clock $(arg bag_dir)/$(arg play_dir_imu)"/>
+    <node pkg="rosbag" type="play" name="replay_aruco_pose" output="screen" args="--clock $(arg bag_dir)/$(arg play_dir_aruco) --topic /tello_1/face_pose_arr /SOT /EOT /tello_0/aruco_pose_arr"/>
+    <node pkg="rosbag" type="record" name="record_face_eskf" args="record -o $(arg bag_dir)/$(arg save_dir)/$(arg bag_name)-eskf /face_init /face_eskf /face_cov_trace /face_odom /face_quat_norm /face_eskf_q4d /face_cov_trace_q4d /face_odom_q4d /face_quat_norm_q4d /tello_1/eskf_state_full /tello_1/bias /tello_1/eskf_odom /tello_0/eskf_state_full /tello_0/bias /tello_0/eskf_odom /tello_1/eskf_init /tello_1/odom_lidar /tello_0/odom_lidar /face/odom_lidar /SOT"/>
+
+</launch>

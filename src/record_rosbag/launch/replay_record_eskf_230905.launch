@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<launch>
+
+    <arg name="bag_dir" value="$(env HOME)/wayne_temp/tello_ws/bagfiles"/>
+    <!-- <arg name="play_dir" default="230830/tello_0_stationary_2023-08-30-17-03-24.bag"/> -->
+    <!-- <arg name="play_dir" default="230905/numerical_2023-09-07-16-02-48.bag"/> -->
+    <!-- <arg name="play_dir" default="230907/square_in_flight_imu_odom_cmd_2023-09-08-15-19-07.bag"/> -->
+    <!-- <arg name="play_dir" default="230907/square_rotated_in_flight_imu_odom_cmd_2023-09-08-10-56-23.bag"/> -->
+    <!-- <arg name="play_dir" default="230909/tello_C_square_2023-09-09-16-34-00.bag"/> -->
+    <!-- <arg name="play_dir" default="230928/square_imu_odom_2023-09-28-22-09-28.bag"/> -->
+    <!-- <arg name="play_dir" default="231004/tello_1_square_imu_odom_2023-10-04-19-05-30.bag"/> -->
+    <!-- <arg name="play_dir" default="231004/tello_0_square_imu_odom_2023-10-04-18-51-26.bag"/> -->
+    <!-- <arg name="play_dir" default="231011/tello_1_circle_imu_odom_2023-10-11-17-46-28.bag"/> -->
+    <arg name="play_dir" default="231010/tello_1_circle_imu_odom_2023-10-10-16-59-04.bag"/>
+
+<!-- rosbag commands -->
+<!-- record topics til keyboardinterrupt -->
+    <!-- publish topics -->
+    <node pkg="rostopic" type="rostopic" name="rostopic" args="pub /SOT std_msgs/Empty"/>
+
+    <!-- eskf -->
+    <!-- <node pkg="tello_pub" type="multiDroneOdom" name="multiDroneOdom" output="screen"/> -->
+    
+    <!-- record/replay -->
+    <node pkg="rosbag" type="play" name="replay_imu_odom" output="screen"
+        args="--clock $(arg bag_dir)/$(arg play_dir) /tello_1/imu:=/tello_0/imu /tello_1/odom:=/tello_0/odom"/>
+    <!-- <node pkg="rosbag" type="play" name="replay_imu_odom" output="screen"
+        args="clock $(arg bag_dir)/$(arg play_dir)"/> -->
+    <!-- <node pkg="rosbag" type="record" name="record_tello_0_eskf" 
+        args="record -o $(arg bag_dir)/230909/tello_0_origin_rotated-eskf /tello_0/eskf_state_full /tello_0/cov_trace /tello_0/bias /tello_0/eskf_odom"/> -->
+    <!-- <node pkg="rosbag" type="record" name="record_tello_0_eskf" 
+        args="record -o $(arg bag_dir)/231004/tello_1_square_flight-eskf /tello_0/eskf_state_full /tello_0/cov_trace /tello_0/bias /tello_0/eskf_odom"/> -->
+    <!-- <node pkg="rosbag" type="record" name="record_tello_0_eskf" 
+        args="record -o $(arg bag_dir)/231011/tello_0_square_flight_1-eskf /tello_0/eskf_state_full /tello_0/cov_trace /tello_0/bias /tello_0/eskf_odom"/> -->
+    <!-- <node pkg="rosbag" type="record" name="record_tello_0_eskf" 
+        args="record -o $(arg bag_dir)/231013/tello_1_circle_flight_3-eskf /tello_0/eskf_state_full /tello_0/cov_trace /tello_0/bias /tello_0/eskf_odom"/> -->
+    <!-- <node pkg="rosbag" type="record" name="record_tello_0_eskf_origin" 
+        args="record -o $(arg bag_dir)/231013/tello_1_square_flight_1-eskf_origin /tello_0/eskf_state_origin /tello_0/cov_trace_origin /tello_0/bias_origin /tello_0/eskf_odom_origin"/> -->
+    <node pkg="rosbag" type="record" name="record_tello_0_eskf" 
+        args="record -o $(arg bag_dir)/231108/tello_1_circle_flight_1-eskf /tello_0/eskf_state_full /tello_0/cov_trace /tello_0/bias /tello_0/eskf_odom"/>
+    
+</launch>

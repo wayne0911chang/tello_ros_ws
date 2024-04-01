@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name="bag_dir" value="$(env HOME)/wayne_temp/tello_ws/bagfiles/231120"/>
+    
+    <arg name="d0_name" value="tello_0"/>
+    <arg name="d1_name" value="tello_1"/>
+    <arg name="d2_name" value="tello_2"/>
+        
+    <!-- rosbag commands -->
+    <!-- record topics til keyboardinterrupt -->
+    <!-- tello_0 -->
+    <group ns="tello_0">
+        <node pkg="rosbag" type="record" name="record_imu_odom" output="screen"
+            args="record -o $(arg bag_dir)/$(arg d0_name)-imu-odom /$(arg d0_name)/imu /$(arg d0_name)/odom "/>
+        <node pkg="rosbag" type="record" name="record_aruco" output="screen"
+            args="record -o $(arg bag_dir)/$(arg d0_name)-aruco /$(arg d0_name)/image_raw/aruco /$(arg d0_name)/aruco_pose_arr"/>       
+        <node pkg="rosbag" type="record" name="record_others" output="screen"
+            args="record -o $(arg bag_dir)/$(arg d0_name)-others /$(arg d0_name)/land /$(arg d0_name)/takeoff /$(arg d0_name)/cmd_vel /$(arg d0_name)/manual_takeoff"/>
+    </group>
+    
+    <!-- tello_1 -->
+    <group ns="tello_1">
+        <node pkg="rosbag" type="record" name="record_imu_odom" output="screen"
+            args="record -o $(arg bag_dir)/$(arg d1_name)-imu-odom /$(arg d1_name)/imu /$(arg d1_name)/odom "/>
+        <node pkg="rosbag" type="record" name="record_aruco" output="screen"
+            args="record -o $(arg bag_dir)/$(arg d1_name)-aruco /$(arg d1_name)/image_raw/aruco /$(arg d1_name)/aruco_pose_arr"/>       
+        <node pkg="rosbag" type="record" name="record_others" output="screen"
+            args="record -o $(arg bag_dir)/$(arg d1_name)-others /$(arg d1_name)/land /$(arg d1_name)/takeoff /$(arg d1_name)/cmd_vel /$(arg d1_name)/manual_takeoff"/>
+    </group>
+
+    <!-- tello_2 -->
+    <group ns="tello_2">
+        <node pkg="rosbag" type="record" name="record_imu_odom" output="screen"
+            args="record -o $(arg bag_dir)/$(arg d2_name)-imu-odom /$(arg d2_name)/imu /$(arg d2_name)/odom "/>
+        <node pkg="rosbag" type="record" name="record_aruco" output="screen"
+            args="record -o $(arg bag_dir)/$(arg d2_name)-aruco /$(arg d2_name)/image_raw/aruco /$(arg d2_name)/aruco_pose_arr"/>       
+        <node pkg="rosbag" type="record" name="record_others" output="screen"
+            args="record -o $(arg bag_dir)/$(arg d2_name)-others /$(arg d2_name)/land /$(arg d2_name)/takeoff /$(arg d2_name)/cmd_vel /$(arg d2_name)/manual_takeoff"/>
+    </group>
+</launch>

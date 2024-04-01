@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<launch>
+
+    <arg name="bag_dir"             value="$(env HOME)/wayne_temp/tello_ws/bagfiles"/>
+    <arg name="node_start_delay"    default="1.0" /> 
+    
+    <!-- evaluate the circle traj -->
+    <!-- <arg name="play_dir" default="231015/tello_1_circle_imu_odom_1.bag"/> -->
+    <!-- <arg name="play_dir" default="231015/tello_1_circle_imu_odom_2.bag"/> -->
+    <!-- <arg name="play_dir" default="231015/tello_1_circle_imu_odom_3.bag"/> -->
+    
+    <!-- evaluate the square traj -->
+    <arg name="play_dir"        default="240312/sq1/tello_0_circle_imu_odom_2024-03-12-21-44-03.bag"/>
+    <arg name="play_dir_aruco"  default="240312/sq1/tello_0_circle_img_2024-03-12-21-44-03.bag"/>
+    <!-- <arg name="play_dir" default="240312/sq1/tello_0_circle_imu_odom_2024-03-12-21-44-03.bag"/> -->
+    <!-- <arg name="play_dir" default="240312/sq1/tello_0_circle_imu_odom_2024-03-12-21-44-03.bag"/> -->
+
+    <arg name="save_dir" default="240314"/>
+
+    <!-- publish topics -->
+    <node pkg="rostopic" type="rostopic" name="rostopic" args="pub /SOT std_msgs/Empty" launch-prefix="bash -c 'sleep $(arg node_start_delay); $0 $@' "/>
+
+    <!-- record/replay -->
+    <node pkg="rosbag" type="play" name="replay_imu_odom" output="screen"
+        args="--clock $(arg bag_dir)/$(arg play_dir) --topic /tello_0/imu /tello_0/odom"/>
+    <node pkg="rosbag" type="play" name="replay_aruco_pose" output="screen"
+        args="--clock $(arg bag_dir)/$(arg play_dir_aruco) --topic /camera/aruco_pose_arr"/>
+    <node pkg="rosbag" type="record" name="record_tello_0_eskf_aruco" 
+        args="record -o $(arg bag_dir)/$(arg save_dir)/tello_0_sq1-eskf /tello_0/eskf_state_full /tello_0/cov_trace /tello_0/bias /tello_0/eskf_odom /tello_0/eskf_state_origin /tello_0/cov_trace_origin /tello_0/bias_origin /tello_0/eskf_state_q4d /tello_0/cov_trace_q4d /tello_0/bias_q4d /tello_0/eskf_odom_q4d /tello_0/eskf_odom_origin /camera/realsense_odom /SOT"/>
+    
+</launch>

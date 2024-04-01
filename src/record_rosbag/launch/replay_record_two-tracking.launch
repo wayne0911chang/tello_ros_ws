@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name="bag_dir" value="$(env HOME)/wayne_temp/tello_ws/bagfiles/240109"/>
+    
+    
+    <!-- <arg name="imu_odom"    default="VIO-imu-odom_2024-01-09-07-24-08.bag"/>  the wrong one-->
+    <!-- <arg name="imu_odom"    default="VIO-imu-odom_2024-01-09-11-52-52.bag"/> the mapped one-->
+
+    <arg name="imu_odom_other"      default="two_tracking-imu-odom-other_2024-01-10-08-24-03.bag"/>
+    <arg name="img"                 default="two_tracking-img_2024-01-10-08-24-03.bag"/>
+    <arg name="eskf"                default="two_tracking-eskf_2024-01-10-08-24-03.bag"/>
+    
+    
+    <arg name="bag_name"    default="two_tracking"/>
+    <arg name="d0"          value="tello_0"/>
+    <arg name="d1"          value="tello_1"/>
+    <arg name="d2"          value="tello_2"/>
+        
+    <!-- rosbag commands -->
+    <!-- publish topics -->
+    <!-- <node pkg="rostopic" type="rostopic" name="rostopic" args="pub /SOT std_msgs/Empty"/> -->
+    <!-- <node pkg="rosbag" type="play" name="replay_imu_odom" output="screen" args="clock $(arg bag_dir)/$(arg imu_odom) /$(arg d2)/imu_1:=/$(arg d2)/imu /$(arg d2)/odom_1:=/$(arg d2)/odom /$(arg d1)/imu_2:=/$(arg d1)/imu /$(arg d1)/odom_2:=/$(arg d1)/odom"/> -->
+    <node pkg="rosbag" type="play" name="replay_imu_odom_other" output="screen" args="--clock $(arg bag_dir)/$(arg imu_odom_other)"/>
+    <node pkg="rosbag" type="play" name="replay_img" output="screen" args="--clock $(arg bag_dir)/$(arg img) --topics /$(arg d0)/aruco_pose_arr /$(arg d1)/face_pose_arr"/>
+    <node pkg="rosbag" type="play" name="replay_eskf" output="screen" args="--clock $(arg bag_dir)/$(arg eskf)"/>
+    <!-- <node pkg="rosbag" type="play" name="replay_other" output="screen" args="clock $(arg bag_dir)/$(arg other)"/> -->
+    
+    <!-- record topics til keyboardinterrupt -->
+    <!-- <node pkg="rosbag" type="record" name="swap_imu_odom" output="screen"
+        args="record -o $(arg bag_dir)/$(arg bag_name)-imu-odom /$(arg d0)/imu /$(arg d0)/odom /$(arg d1)/imu_2 /$(arg d1)/odom_2 /$(arg d2)/imu_1 /$(arg d2)/odom_1"/> -->
+
+    <!-- record all sensor nodes -->
+
+    <!-- <node pkg="rosbag" type="record" name="record_eskf" output="screen"
+        args="record -o $(arg bag_dir)/$(arg bag_name)-eskf /$(arg d0)/eskf_state_full /$(arg d0)/bias /$(arg d1)/eskf_state_full /$(arg d1)/bias /$(arg d1)/eskf_init /$(arg d2)/eskf_state_full /$(arg d2)/bias /$(arg d2)/eskf_init /face_eskf /face_init /cost_func_and_grad"/> -->
+
+</launch>

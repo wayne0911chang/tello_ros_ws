@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name="bag_dir" value="$(env HOME)/wayne_temp/tello_ws/bagfiles/240313"/>
+    
+    <arg name="bag_name" default="TwoTracking"/>
+    <arg name="d0" value="tello_0"/>
+    <arg name="d1" value="tello_1"/>
+        
+    <!-- rosbag commands -->
+    <!-- record topics til keyboardinterrupt -->
+    
+    <!-- record all sensor nodes -->
+    <node pkg="rosbag" type="record" name="record_eskf_ctrl" output="screen"
+        args="record -o $(arg bag_dir)/$(arg bag_name)-imu-odom-eskf-other /$(arg d0)/imu /$(arg d0)/odom /$(arg d0)/eskf_state_full /$(arg d0)/eskf_odom /$(arg d0)/bias /$(arg d1)/imu /$(arg d1)/odom /$(arg d1)/eskf_state_full /$(arg d1)/eskf_odom /$(arg d1)/bias /$(arg d1)/eskf_init /face_eskf /face_init /SOT /EOT /exp_mode /$(arg d0)/land /$(arg d0)/takeoff /$(arg d0)/cmd_vel /$(arg d0)/manual_takeoff $(arg d1)/land /$(arg d1)/takeoff /$(arg d1)/cmd_vel /$(arg d1)/manual_takeoff /cost_func_and_grad /SOT /exp_mode /$(arg d0)/des_pose /$(arg d1)/des_pose"/>
+    <node pkg="rosbag" type="record" name="record_img" output="screen"
+        args="record -o $(arg bag_dir)/$(arg bag_name)-img-aruco /$(arg d0)/image_raw/aruco /$(arg d0)/aruco_pose_arr /$(arg d1)/image_raw/aruco /$(arg d1)/face_pose_arr /camera/image_raw/aruco /camera/aruco_pose_arr /SOT /EOT /exp_mode"/>
+
+
+
+</launch>

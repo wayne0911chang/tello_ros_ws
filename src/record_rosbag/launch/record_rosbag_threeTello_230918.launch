@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name="record_diag" default="true"/>
+    <arg name="record_imu_odom" default="true"/>
+    <arg name="record_img" default="false"/>
+    <!-- bag file directory -->
+    <arg name="bag_dir" value="$(env HOME)/wayne_temp/tello_ws/bagfiles"/>
+    <!-- date of exp -->
+    <arg name="date" value="230918"/>
+
+<!-- rosbag commands -->
+<!-- record topics til keyboard interrupt -->
+    <!-- the observing tello -->
+    <group ns="tello_0">
+        <node pkg="rosbag" type="record" name="record_imu_odom" 
+            args="record -o $(arg bag_dir)/$(arg date)/tello_0-imu-odom /tello_0/imu /tello_0/odom" 
+            if="$(arg record_imu_odom)"/>
+        <node pkg="rosbag" type="record" name="record_diag" 
+            args="record -o $(arg bag_dir)/$(arg date)/tello_0-diag /SOT /tello_0/status /tello_0/land /tello_0/takeoff /tello_0/emergency /tello_0/cmd_vel /tello_0/manual_takeoff" 
+            if="$(arg record_diag)"/>
+    </group>
+
+    <!-- the flying tello -->
+    <group ns="tello_1">
+        <node pkg="rosbag" type="record" name="record_imu_odom" 
+            args="record -o $(arg bag_dir)/$(arg date)/tello_1-imu-odom /tello_1/imu /tello_1/odom" 
+            if="$(arg record_imu_odom)"/>
+        <node pkg="rosbag" type="record" name="record_diag" 
+            args="record -o $(arg bag_dir)/$(arg date)/tello_1-diag /SOT /tello_1/status /tello_1/land /tello_1/takeoff /tello_1/emergency /tello_1/cmd_vel /tello_1/manual_takeoff" 
+            if="$(arg record_diag)"/>
+    </group>
+
+    <!-- the side tello -->
+    <group ns="tello_2">
+        <node pkg="rosbag" type="record" name="record_imu_odom" 
+            args="record -o $(arg bag_dir)/$(arg date)/tello_2-imu-odom /tello_2/imu /tello_2/odom" 
+            if="$(arg record_imu_odom)"/>
+        <node pkg="rosbag" type="record" name="record_diag" 
+        args="record -o $(arg bag_dir)/$(arg date)/tello_2-diag /SOT /tello_2/status /tello_2/land /tello_2/takeoff /tello_2/emergency /tello_2/cmd_vel /tello_2/manual_takeoff" 
+        if="$(arg record_diag)"/>
+    </group>
+
+</launch>
+
+

@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<launch>
+    <!-- drifting time -->
+    <!-- <arg name="duration" value="3.87"/> -->
+    <arg name="duration" value="6.08"/>
+    <!-- <arg name="duration"    value="42"/> -->
+    <arg name="date"        value="231120"/>
+
+    <arg name="bag_dir" value="$(env HOME)/wayne_temp/tello_ws/bagfiles"/>
+    
+    <arg name="play_imu_odom_0" default="231031/hover/tello_0-imu-odom_2023-11-03-19-48-11.bag"/>
+    <arg name="play_imu_odom_1" default="231031/hover/tello_1-imu-odom_2023-11-03-19-48-11.bag"/>
+    <arg name="play_imu_odom_2" default="231031/hover/tello_2-imu-odom_2023-11-03-19-48-11.bag"/>
+    <arg name="play_aruco_0"    default="231031/hover/tello_0-aruco_2023-11-03-19-48-11.bag"/>
+    <!-- <arg name="play_imu_odom_0" default="231031/static/tello_0-imu-odom_2023-11-03-19-22-46.bag"/>
+    <arg name="play_imu_odom_1" default="231031/static/tello_1-imu-odom_2023-11-03-19-22-46.bag"/>
+    <arg name="play_imu_odom_2" default="231031/static/tello_2-imu-odom_2023-11-03-19-22-46.bag"/>
+    <arg name="play_aruco_0"    default="231031/static/tello_0-aruco_2023-11-03-19-22-46.bag"/> -->
+    
+
+<!-- rosbag commands -->
+<!-- record topics til keyboardinterrupt -->
+    <!-- publish topics -->
+    <node pkg="rostopic" type="rostopic" name="rostopic" args="pub /SOT std_msgs/Empty"/>
+
+
+    <!-- record/replay -->
+    <node pkg="rosbag" type="play" name="replay_imu_odom_2" output="screen"
+        args="--clock --duration=$(arg duration) $(arg bag_dir)/$(arg play_imu_odom_2)"/>
+    <node pkg="rosbag" type="play" name="replay_imu_odom_0" output="screen"  
+        args="--clock --duration=$(arg duration) $(arg bag_dir)/$(arg play_imu_odom_0)"/>
+    <node pkg="rosbag" type="play" name="replay_imu_odom_1" output="screen"
+        args="--clock --duration=$(arg duration) $(arg bag_dir)/$(arg play_imu_odom_1)"/>
+    <node pkg="rosbag" type="play" name="replay_aruco_0" output="screen"
+        args="--clock --duration=$(arg duration) $(arg bag_dir)/$(arg play_aruco_0)"/>
+    
+    
+    <node pkg="rosbag" type="record" name="record_tello_0_eskf" 
+        args="record -o $(arg bag_dir)/$(arg date)/tello_0_hover-eskf /tello_0/eskf_state_full /tello_0/cov_trace /tello_0/bias /tello_0/eskf_odom"/>
+    <node pkg="rosbag" type="record" name="record_tello_1_eskf" 
+        args="record -o $(arg bag_dir)/$(arg date)/tello_1_hover-eskf /tello_1/eskf_state_full /tello_1/bias /tello_1/eskf_odom"/>
+    <node pkg="rosbag" type="record" name="record_tello_2_eskf" 
+        args="record -o $(arg bag_dir)/$(arg date)/tello_2_hover-eskf /tello_2/eskf_state_full /tello_2/bias /tello_2/eskf_odom"/>
+
+    <!-- <node pkg="rosbag" type="record" name="record_tello_0_eskf" 
+        args="record -o $(arg bag_dir)/$(arg date)/tello_0_static-eskf /tello_0/eskf_state_full /tello_0/cov_trace /tello_0/bias /tello_0/eskf_odom"/>
+    <node pkg="rosbag" type="record" name="record_tello_1_eskf" 
+        args="record -o $(arg bag_dir)/$(arg date)/tello_1_static-eskf /tello_1/eskf_state_full /tello_1/bias /tello_1/eskf_odom"/>
+    <node pkg="rosbag" type="record" name="record_tello_2_eskf" 
+        args="record -o $(arg bag_dir)/$(arg date)/tello_2_static-eskf /tello_2/eskf_state_full /tello_2/bias /tello_2/eskf_odom"/> -->
+
+
+
+    <!-- <node pkg="rosbag" type="record" name="record_tello_0_eskf" 
+        args="record -o $(arg bag_dir)/231011/tello_0_square_flight_1-eskf /tello_0/eskf_state_full /tello_0/cov_trace /tello_0/bias /tello_0/eskf_odom"/> -->
+    <!-- <node pkg="rosbag" type="record" name="record_tello_0_eskf_origin" 
+        args="record -o $(arg bag_dir)/231013/tello_1_square_flight_1-eskf_origin /tello_0/eskf_state_origin /tello_0/cov_trace_origin /tello_0/bias_origin /tello_0/eskf_odom_origin"/>
+     -->
+</launch>

@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name="bag_dir" value="$(env HOME)/wayne_temp/tello_ws/bagfiles/240109"/>
+    
+    <arg name="bag_name" default="face_odom"/>
+    <arg name="d0" value="tello_0"/>
+    <arg name="d1" value="tello_1"/>
+    <arg name="d2" value="tello_2"/>
+        
+    <!-- rosbag commands -->
+    <!-- record topics til keyboardinterrupt -->
+    
+    <!-- record all sensor nodes -->
+    <node pkg="rosbag" type="record" name="record_eskf_ctrl" output="screen"
+        args="record -o $(arg bag_dir)/$(arg bag_name)-eskf /$(arg d0)/eskf_state_full /$(arg d0)/bias /$(arg d1)/eskf_state_full /$(arg d1)/bias /$(arg d1)/eskf_init /$(arg d2)/eskf_state_full /$(arg d2)/bias /$(arg d2)/eskf_init /face_eskf /face_init /SOT /EOT /exp_mode /$(arg d0)/cmd_vel /$(arg d1)/cmd_vel /$(arg d2)/cmd_vel /cost_func_and_grad"/>
+    <node pkg="rosbag" type="record" name="record_imu_odom_other" output="screen"
+        args="record -o $(arg bag_dir)/$(arg bag_name)-imu-odom-other /$(arg d0)/imu /$(arg d0)/odom /$(arg d1)/imu /$(arg d1)/odom /$(arg d2)/imu /$(arg d2)/odom /$(arg d0)/land /$(arg d0)/takeoff /$(arg d0)/cmd_vel /$(arg d0)/manual_takeoff /$(arg d1)/land /$(arg d1)/takeoff /$(arg d1)/cmd_vel /$(arg d1)/manual_takeoff /$(arg d2)/land /$(arg d2)/takeoff /$(arg d2)/cmd_vel /$(arg d2)/manual_takeoff /SOT /EOT /exp_mode"/>
+    <node pkg="rosbag" type="record" name="record_img" output="screen"
+        args="record -o $(arg bag_dir)/$(arg bag_name)-img /$(arg d0)/image_raw/aruco /$(arg d0)/aruco_pose_arr /$(arg d0)/human_pose_arr /$(arg d1)/image_raw/aruco /$(arg d1)/face_pose_arr /$(arg d2)/image_raw/aruco /$(arg d2)/human_pose_arr /SOT /EOT /exp_mode"/>
+
+
+
+</launch>

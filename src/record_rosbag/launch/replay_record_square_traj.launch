@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name="bag_dir" value="$(env HOME)/wayne_temp/tello_ws/bagfiles"/>
+    <!-- <arg name="play_dir" default="20220419/tello-imu-odom_2022-04-19-22-48-43.bag"/> -->
+    <!-- <arg name="play_dir" default="20220419/tello-imu-odom_2022-04-19-22-49-28.bag"/> -->
+    <!-- <arg name="play_dir" default="20220419/tello-imu-odom_2022-04-19-22-53-27.bag"/> -->
+    <!-- <arg name="play_dir" default="20220419/tello-imu-odom_2022-04-19-23-00-18.bag"/> -->
+    <!-- <arg name="play_dir" default="20220621/tello-imu-odom_2022-06-21-22-05-16.bag"/> -->
+    <!-- <arg name="play_dir" default="231004/vlp16_pcl_tello_1_square_traj_3.bag"/> -->
+    <!-- <arg name="play_dir" default="231004/vlp16_pcl_tello_1_square_traj_timed_3.bag"/> -->
+    <arg name="play_dir" default="231011/vlp16_pcl_tello_1_circular_traj_timed_3.bag"/>
+
+<!-- rosbag commands -->
+<!-- record topics til keyboardinterrupt -->
+    <!-- <node pkg="rosbag" type="play" name="replay_data" output="screen"
+        args="clock $(arg bag_dir)/$(arg play_dir) /tello/imu:=/tello_0/imu /tello/odom:=/tello_0/odom /tello/cmd_vel:=/tello_0/cmd_vel /tello/takeoff:=/tello_0/takeoff /tello/land:=/tello_0/land"/> -->
+    <!-- <node pkg="rosbag" type="play" name="replay_pcd" output="screen"
+        args="-r 10 clock $(arg bag_dir)/$(arg play_dir)"/> -->
+    
+
+    <node pkg="rosbag" type="play" name="replay_pcd" output="screen"
+        args="--clock $(arg bag_dir)/$(arg play_dir)" />
+    <!-- <node pkg="rosbag" type="record" name="record_topic" output="screen"
+        args="record -o $(arg bag_dir)/231011/tello_1_square_traj_lidar_1 /tello_1/odom_lidar"/> -->
+    <!-- <node pkg="rosbag" type="record" name="record_topic" output="screen"
+        args="record -o $(arg bag_dir)/231011/tello_0_square_traj_lidar_1 /tello_0/odom_lidar"/> -->
+    <node pkg="rosbag" type="record" name="record_topic" output="screen"
+        args="record -o $(arg bag_dir)/231011/tello_1_circular_traj_lidar_3 /tello_1/odom_lidar"/>
+
+    <!-- <node pkg="rosbag" type="record" name="record_topic" 
+        args="record -o $(arg bag_dir)/230909/tello_C_square /tello_0/imu /tello_0/odom /tello_0/cmd_vel /tello_0/land /tello_0/takeoff /filtered_states /height_filtered"/> -->
+</launch>

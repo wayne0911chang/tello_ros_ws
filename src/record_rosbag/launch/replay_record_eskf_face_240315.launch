@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<launch>
+
+    <arg name="bag_dir"     value="$(env HOME)/wayne_temp/tello_ws/bagfiles"/>
+    <arg name="bag_name"    value="face_odom"/>
+    <arg name="save_dir"    default="240315"/>
+
+    <!-- evaluate the face traj -->
+    <arg name="play_dir"            default="240109/faceOdom/face_odom-eskf_2024-01-10-09-00-18.bag"/>
+    <arg name="play_dir_lidar_1"    default="240109/faceOdom/tello_1_lidar_odom_2024-01-14-11-12-33.bag"/>
+    <arg name="play_dir_lidar_F"    default="240109/faceOdom/face_lidar_odom_2024-01-14-12-46-54.bag"/>
+    <arg name="play_dir_aruco"      default="240109/faceOdom/face_odom-img_2024-01-10-09-00-18.bag"/>
+
+    <!-- publish topics -->
+    <!-- use the /SOT and /EOT in bagfiles -->
+    <!-- <node pkg="rostopic" type="rostopic" name="rostopic" args="pub /SOT std_msgs/Empty"/> -->
+
+    <!-- record/replay -->
+    <node pkg="rosbag" type="play" name="replay_eskf_1" output="screen" args="--clock $(arg bag_dir)/$(arg play_dir) --topic /tello_1/eskf_state_full /tello_1/eskf_init"/>
+    <node pkg="rosbag" type="play" name="replay_aruco_pose" output="screen" args="--clock $(arg bag_dir)/$(arg play_dir_aruco) --topic /tello_1/face_pose_arr /SOT /EOT"/>
+    <node pkg="rosbag" type="play" name="replay_lidar_F" output="screen" args="--clock $(arg bag_dir)/$(arg play_dir_lidar_F) --topic /face/odom_lidar"/>
+    <node pkg="rosbag" type="play" name="replay_lidar_1" output="screen" args="--clock $(arg bag_dir)/$(arg play_dir_lidar_1) --topic /tello_1/odom_lidar"/>
+    <node pkg="rosbag" type="record" name="record_face_eskf" args="record -o $(arg bag_dir)/$(arg save_dir)/$(arg bag_name)-eskf /face_init /face_eskf /face_cov_trace /face_odom /face_quat_norm /face_eskf_q4d /face_cov_trace_q4d /face_odom_q4d /tello_1/eskf_state_full /tello_1/eskf_init /tello_1/odom_lidar /face/odom_lidar /SOT"/>
+
+</launch>

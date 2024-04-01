@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name="bag_dir" value="$(env HOME)/wayne_temp/tello_ws/bagfiles"/>
+    
+    <arg name="drone_name" value="tello_0"/>
+    <!-- <arg name="drone_name" value="tello_1"/> -->
+
+    <!-- <arg name="play_dir" default="230830/tello_0_stationary_2023-08-30-17-03-24.bag"/> -->
+    <!-- <arg name="play_dir" default="230905/tello_0_yaw_rotation_2023-09-05-20-37-07.bag"/> -->
+
+<!-- rosbag commands -->
+<!-- record topics til keyboardinterrupt -->
+    <!-- eskf -->
+    <!-- <node pkg="tello_pub" type="multiDroneOdom" name="multiDroneOdom" output="screen"/> -->
+
+    <!-- circular data -->
+    <!-- <node pkg="tello_pub" type="circularImuOdom" name="circularImuOdom" output="screen"/> -->
+
+    <!-- record/replay -->
+    <!-- <node pkg="rosbag" type="record" name="manual_square_imu_odom" output="screen"
+        args="record -o $(arg bag_dir)/231010/$(arg drone_name)_square_imu_odom /$(arg drone_name)/imu /$(arg drone_name)/odom"/>
+    <node pkg="rosbag" type="record" name="manual_square_others" output="screen"
+        args="record -o $(arg bag_dir)/231010/$(arg drone_name)_square_others /$(arg drone_name)/land /$(arg drone_name)/takeoff /$(arg drone_name)/cmd_vel /$(arg drone_name)/manual_takeoff"/> -->
+    <node pkg="rosbag" type="record" name="manual_rotation_imu_odom" output="screen"
+        args="record -o $(arg bag_dir)/231011/$(arg drone_name)_circle_imu_odom /$(arg drone_name)/imu /$(arg drone_name)/odom"/>
+    <node pkg="rosbag" type="record" name="manual_circle_others" output="screen"
+        args="record -o $(arg bag_dir)/231011/$(arg drone_name)_circle_others /$(arg drone_name)/land /$(arg drone_name)/takeoff /$(arg drone_name)/cmd_vel /$(arg drone_name)/manual_takeoff"/>
+    <!-- <node pkg="rosbag" type="record" name="record_tello_0_eskf" 
+        args="record -o $(arg bag_dir)/230905/tello_0-eskf /tello_0/eskf_state_full /tello_0/cov_trace /tello_0/bias"/> -->
+</launch>
